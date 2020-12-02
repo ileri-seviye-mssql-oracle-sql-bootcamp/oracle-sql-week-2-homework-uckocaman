@@ -12,6 +12,11 @@ CREATE SEQUENCE status_id_seq START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE product_id_seq START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE category_id_seq START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE brand_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE employee_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE address_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE country_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE city_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE district_id_seq START WITH 1 INCREMENT BY 1;
 
 CREATE TABLE week2.customer(
     customer_id INTEGER DEFAULT customer_id_seq.nextval NOT NULL,
@@ -19,7 +24,9 @@ CREATE TABLE week2.customer(
     surname VARCHAR2(50) NOT NULL,
     email VARCHAR2(50) NOT NULL,
     phone VARCHAR2(15) NOT NULL,
+    address_id INTEGER NOT NULL,
     CONSTRAINT customer_pk PRIMARY KEY(customer_id)
+    CONSTRAINT customer_address_fk FOREIGN KEY (address_id) REFERENCES week2.address(address_id)
 );
 
 CREATE TABLE week2.status(
@@ -70,4 +77,46 @@ CREATE TABLE brand(
     brand_id INTEGER DEFAULT brand_id_seq.nextval NOT NULL,
     brand_name VARCHAR2(50) NOT NULL,
     CONSTRAINT brand_pk PRIMARY KEY(brand_id)
+);
+
+CREATE TABLE week2.address(
+    address_id INTEGER DEFAULT address_id_seq.nextval NOT NULL,
+    country_id INTEGER NOT NULL,
+    city_id INTEGER NOT NULL,
+    district_id INTEGER NOT NULL,
+    address_line1 VARCHAR2(100) NOT NULL,
+    address_line2 VARCHAR2(100),
+    CONSTRAINT addres_pk PRIMARY KEY(addres_id),
+    CONSTRAINT country_fk FOREIGN KEY (country_id) REFERENCES week2.country(country_id),
+    CONSTRAINT city_fk FOREIGN KEY (city_id) REFERENCES week2.city(city_id),
+    CONSTRAINT district_fk FOREIGN KEY (district_id) REFERENCES week2.district(district_id)
+);
+
+CREATE TABLE country(
+    country_id INTEGER DEFAULT country_id_seq.nextval NOT NULL,
+    country VARCHAR2(50)NOT NULL,
+    CONSTRAINT country_pk PRIMARY KEY(country_id)
+);
+
+CREATE TABLE city(
+    city_id INTEGER DEFAULT city_id_seq.nextval NOT NULL,
+    city VARCHAR2(50)NOT NULL,
+    CONSTRAINT city_pk PRIMARY KEY(city_id)
+);
+
+CREATE TABLE city(
+    district_id INTEGER DEFAULT district_id_seq.nextval NOT NULL,
+    district VARCHAR2(50)NOT NULL,
+    CONSTRAINT district_pk PRIMARY KEY(district_id)
+);
+
+CREATE TABLE week2.employees(
+    employee_id INTEGER DEFAULT employee_id_seq.nextval NOT NULL,
+    name VARCHAR2(50) NOT NULL,
+    surname VARCHAR2(50) NOT NULL,
+    email VARCHAR2(50) NOT NULL,
+    phone VARCHAR2(15) NOT NULL,
+    address_id INTEGER NOT NULL,
+    CONSTRAINT customer_pk PRIMARY KEY(customer_id),
+    CONSTRAINT employee_address_fk FOREIGN KEY (address_id) REFERENCES week2.address(address_id)
 );
