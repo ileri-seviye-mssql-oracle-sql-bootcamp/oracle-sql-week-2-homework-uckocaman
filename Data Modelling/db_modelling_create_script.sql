@@ -9,6 +9,9 @@
 CREATE SEQUENCE customer_id_seq START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE order_id_seq START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE status_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE product_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE category_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE brand_id_seq START WITH 1 INCREMENT BY 1;
 
 CREATE TABLE week2.customer(
     customer_id INTEGER DEFAULT customer_id_seq.nextval NOT NULL,
@@ -42,6 +45,29 @@ CREATE TABLE week2.order_details(
     price NUMBER(8,2) NOT NULL,
     quantity INTEGER NOT NULL,
     discount NUMBER(4,2) NOT NULL,
-    CONSTRAINT order_fk FOREIGN KEY (order_id) REFERENCES week2.orders(order_id)
-    --,CONSTRAINT product_fk FOREIGN KEY (product_id) REFERENCES product(product_id)
+    CONSTRAINT order_fk FOREIGN KEY (order_id) REFERENCES week2.orders(order_id),
+    CONSTRAINT product_fk FOREIGN KEY (product_id) REFERENCES products(product_id)
+);
+
+CREATE TABLE products(
+    product_id INTEGER DEFAULT product_id_seq.nextval NOT NULL,
+    product_name VARCHAR2(50) NOT NULL,
+    category_id INTEGER NOT NULL,
+    unit_price NUMBER(8,2) NOT NULL,
+    brand_id INTEGER NOT NULL,
+    CONSTRAINT product_pk PRIMARY KEY(product_id),
+    CONSTRAINT category_fk FOREIGN KEY (category_id) REFERENCES week2.categoryTbl(category_id),
+    CONSTRAINT brand_fk FOREIGN KEY (brand_id) REFERENCES week2.brand(brand_id)
+);
+
+CREATE TABLE categoryTbl(
+    category_id INTEGER DEFAULT category_id_seq.nextval NOT NULL,
+    category_name VARCHAR2(50) NOT NULL,
+    CONSTRAINT category_pk PRIMARY KEY(category_id)
+);
+
+CREATE TABLE brand(
+    brand_id INTEGER DEFAULT brand_id_seq.nextval NOT NULL,
+    brand_name VARCHAR2(50) NOT NULL,
+    CONSTRAINT brand_pk PRIMARY KEY(brand_id)
 );
